@@ -815,3 +815,83 @@ input[type="range"]:focus-visible {
   white-space: normal;
   min-width: 14rem;
 }
+
+/* -------------------------------------------------------------- cast card */
+
+.cast {
+  margin: 1.5rem 0 3.5rem;
+  padding: 1.75rem;
+  background: linear-gradient(180deg, rgba(53, 214, 240, 0.05), transparent 70%), var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.cast h2 {
+  margin: 0 0 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.cast-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.cast-item {
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  gap: 0.9rem;
+  align-items: start;
+}
+
+.cast-swatch {
+  width: 12px;
+  height: 12px;
+  margin-top: 0.42rem;
+  border-radius: 3px;
+}
+
+.cast-you {
+  background: var(--ship);
+}
+
+.cast-earth {
+  background: var(--home);
+}
+
+.cast-dest {
+  background: var(--light);
+}
+
+.cast-name {
+  margin: 0 0 0.15rem;
+  font-size: 0.98rem;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.cast-role {
+  margin: 0;
+  max-width: 58ch;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.cast-role em {
+  font-style: normal;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.cast-foot {
+  margin: 1.5rem 0 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+}

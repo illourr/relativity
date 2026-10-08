@@ -138,8 +138,8 @@ export function tripCalculator(): HTMLElement {
     verdict.textContent =
       margin > 0
         ? `You arrive home ${duration(margin)} before a light signal sent from Earth today ` +
-          `would even get back. You were away for ${duration(yourYears)}; everyone at home ` +
-          `aged ${duration(earthYears)}.`
+          `would even get back. You were gone for ${duration(yourYears)}; Ana waited ` +
+          `${duration(earthYears)}.`
         : `Too slow to outrun the news: a signal sent from Earth today gets back ` +
           `${duration(-margin)} before you do. You need to be moving faster for the trip to ` +
           `beat the mail.`;
@@ -190,7 +190,11 @@ export function tripCalculator(): HTMLElement {
 
   const stats = el('div', { class: 'stats' }, [
     el('div', { class: 'stat' }, [el('span', { class: 'stat-label' }, ['You, on board']), yourValue]),
-    el('div', { class: 'stat' }, [el('span', { class: 'stat-label' }, ['Earth, at home']), earthValue]),
+    el('div', { class: 'stat' }, [
+      el('span', { class: 'stat-label' }, ['Ana, back on Earth']),
+      earthValue,
+      el('span', { class: 'stat-hint' }, ['in the hangar']),
+    ]),
     el('div', { class: 'stat' }, [el('span', { class: 'stat-label' }, ['Time dilation γ']), gammaValue]),
     el('div', { class: 'stat' }, [
       el('span', { class: 'stat-label' }, ['Signal round trip']),
@@ -214,7 +218,7 @@ export function tripCalculator(): HTMLElement {
       el('div', { class: 'bar-row' }, [
         el('div', { class: 'bar-name' }, [
           el('span', { class: 'swatch', style: `background:${palette.home}` }),
-          'Earth’s clock',
+          'Ana’s clock',
         ]),
         el('div', { class: 'bar-track' }, [earthFill]),
       ]),
@@ -228,7 +232,10 @@ export function tripCalculator(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['What it costs you']),
       el('p', { class: 'panel-sub' }, [
-        frag(['Round trip, out and back, at constant speed the whole way.']),
+        frag([
+          'You and the Wayfarer make the round trip at constant speed. ',
+          'Ana stays in the hangar the whole time, on the same clock.',
+        ]),
       ]),
     ]),
     el('div', { class: 'panel-body' }, [stats, bars, verdict, el('p', { class: 'panel-sub', style: 'margin:0' }, [destNote])]),

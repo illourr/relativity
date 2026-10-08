@@ -45,10 +45,10 @@ export function massEnergy(): HTMLElement {
     const megatons = rest / J_PER_TON_TNT / 1e6;
     tntRead.textContent = `${num(megatons, 1)} Mt`;
     verdict.textContent =
-      `At rest, ${num(massKg, 2)} kg holds ${sci(rest, 3)} J — the same energy as ` +
-      `${num(megatons, 1)} megatons of TNT, roughly ${num(megatons / 0.015, 0)} times the ` +
-      `Hiroshima bomb. Moving it costs more energy on top of that, and the bill climbs steeply ` +
-      `as the speed approaches light.`;
+      `${num(massKg, 2)} kg of ship, sitting in the hangar or streaking past Proxima, holds the ` +
+      `same ${sci(rest, 3)} J — the energy of ${num(megatons, 1)} megatons of TNT, about ` +
+      `${num(megatons / 0.015, 0)} times the Hiroshima bomb. Speed adds more on top of that, and ` +
+      `the bill climbs steeply as you approach light.`;
 
     // The rest energy is the reference width; everything else scales against it.
     const relative = (value: number): string =>
@@ -64,14 +64,14 @@ export function massEnergy(): HTMLElement {
 
   const massSlider = slider(
     {
-      label: 'Mass',
+      label: 'Mass of the thing you are moving',
       min: 0.001,
       max: 1000,
       step: 0.001,
       value: massKg,
       transform: (raw) => Math.pow(10, -3 + (raw / 1000) * 6),
       display: (v) => (v < 1 ? `${num(v * 1000, 1)} g` : `${num(v, 2)} kg`),
-      hint: 'Logarithmic, from a grain of sand to a small car.',
+      hint: 'Logarithmic, from a grain of sand to a small car. Try the ship, or a person.',
     },
     (v) => {
       massKg = v;
@@ -81,7 +81,7 @@ export function massEnergy(): HTMLElement {
 
   const speedSlider = slider(
     {
-      label: 'Speed',
+      label: 'The Wayfarer\u2019s speed',
       min: 0,
       max: 0.99,
       step: 0.01,
@@ -130,7 +130,7 @@ export function massEnergy(): HTMLElement {
     el('div', { class: 'stat' }, [el('span', { class: 'stat-label' }, ['Kinetic energy']), kineticRead]),
     el('div', { class: 'stat' }, [el('span', { class: 'stat-label' }, ['γ']), gammaRead]),
     el('div', { class: 'stat' }, [
-      el('span', { class: 'stat-label' }, ['Rest energy as TNT']),
+      el('span', { class: 'stat-label' }, ['That energy as TNT']),
       tntRead,
     ]),
   ]);
@@ -141,7 +141,10 @@ export function massEnergy(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['Mass is energy, already']),
       el('p', { class: 'panel-sub' }, [
-        frag(['The rest energy exists whether or not anything is moving.']),
+        frag([
+          'Your own mass, the ship\u2019s hull, the fuel. All of it holds this energy ',
+          'whether or not anything is moving.',
+        ]),
       ]),
     ]),
     el('div', { class: 'panel-body' }, [stats, bars, verdict]),

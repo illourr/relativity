@@ -81,7 +81,7 @@ export function simultaneity(): HTMLElement {
     // The simultaneity line: both ends noted at the same lab instant
     if (showLabLine) {
       dashedLine(ctx, w * 0.04, y - 46, w * 0.96, y - 46, palette.light, [5, 4]);
-      label(ctx, 'same moment for you', w * 0.96, y - 56, palette.light, 11, 'right');
+      label(ctx, 'the one instant you measure at', w * 0.96, y - 56, palette.light, 11, 'right');
     }
 
     label(
@@ -141,7 +141,7 @@ export function simultaneity(): HTMLElement {
       ctx.lineTo(w / 2 + halfW * 2, y - 46 + slope);
       ctx.stroke();
       ctx.restore();
-      label(ctx, 'your "same moment" is tilted here', w * 0.96, y - 58, palette.light, 11, 'right');
+      label(ctx, 'your "same moment" runs at an angle here', w * 0.96, y - 58, palette.light, 11, 'right');
     }
 
     label(
@@ -170,7 +170,7 @@ export function simultaneity(): HTMLElement {
 
   const speed = slider(
     {
-      label: 'Rod speed',
+      label: 'Speed of the Wayfarer',
       min: 0.01,
       max: 0.99,
       step: 0.01,
@@ -203,27 +203,32 @@ export function simultaneity(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['Two events, one instant — to different people']),
       el('p', { class: 'panel-sub' }, [
-        frag(['Both panels use the same on-screen scale. The rod really does look different in each.']),
+        frag([
+        'A docking rod on the Wayfarer\u2019s nose, one light-second long. ',
+        'Both panels use the same on-screen scale. It really does look different in each.',
+      ]),
       ]),
     ]),
     el('div', { class: 'frame-pair' }, [
       el('div', { class: 'frame' }, [
         el('p', { class: 'frame-title' }, [
           el('span', { class: 'swatch', style: `background:${palette.ship}` }),
-          'Lab frame',
+          'You, watching from the hangar',
         ]),
         el('p', { class: 'frame-note' }, [
-          'Both ends of the rod are noted at one lab instant. That is the definition of a length.',
+          'The rod flashes once as it passes you. Both ends are noted at that single instant — ',
+          'which is what it means to measure a length.',
         ]),
         labCanvas,
       ]),
       el('div', { class: 'frame' }, [
         el('p', { class: 'frame-title' }, [
           el('span', { class: 'swatch', style: `background:${palette.home}` }),
-          'Rod frame',
+          'Riding along with the rod',
         ]),
         el('p', { class: 'frame-note' }, [
-          'The rod measures itself with its own simultaneous events, and gets its rest length.',
+          'The rod is stationary here, so it measures itself with its own simultaneous flashes ',
+          'and gets its full length. Nobody is doing anything wrong.',
         ]),
         rodCanvas,
       ]),

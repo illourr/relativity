@@ -256,27 +256,30 @@ export function lightClock(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['One clock, two answers']),
       el('p', { class: 'panel-sub' }, [
-        frag(['Both pictures show the same light clock. It is drawn at the same size in both.']),
+        frag([
+          'You are aboard the Wayfarer, outbound from Earth at the speed below. ',
+          'Ana is back in the hangar watching you go. The same clock, drawn twice.',
+        ]),
       ]),
     ]),
     el('div', { class: 'frame-pair' }, [
       el('div', { class: 'frame' }, [
         el('p', { class: 'frame-title' }, [
           el('span', { class: 'swatch', style: `background:${palette.ship}` }),
-          'Inside the ship',
+          'Looking along with you',
         ]),
         el('p', { class: 'frame-note' }, [
-          'The ship is standing still, so the light just bounces straight up and down.',
+          'You are standing still relative to the Wayfarer, so the beam just bounces straight up and down.',
         ]),
         shipCanvas,
       ]),
       el('div', { class: 'frame' }, [
         el('p', { class: 'frame-title' }, [
           el('span', { class: 'swatch', style: `background:${palette.light}` }),
-          'Seen from Earth',
+          'Looking down from the hangar',
         ]),
         el('p', { class: 'frame-note' }, [
-          'The ship is moving, so the light has to chase a target that is running away.',
+          'Ana watches the whole ship slide past, so the beam has to chase a target that is running away.',
         ]),
         earthCanvas,
       ]),

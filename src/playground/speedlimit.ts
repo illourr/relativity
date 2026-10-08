@@ -23,6 +23,8 @@ import {
  */
 
 export function speedLimit(): HTMLElement {
+  // Ana and the Wayfarer, relabelled: the two observers below are the same two
+  // people from the rest of the page, so no new cast is introduced here.
   let betaA = 0.9;
   let probe = 0.5;
   let phase = 0;
@@ -63,16 +65,16 @@ export function speedLimit(): HTMLElement {
     const seen = seenSpeed();
     const lanes: ReadonlyArray<{ title: string; accent: string; rate: number; note: string }> = [
       {
-        title: 'Lab frame — nobody moving on the ground',
+        title: 'Ana’s frame — she is standing still in the hangar',
         accent: palette.home,
         rate: probe,
-        note: `probe measured at ${percentOfC(probe)}`,
+        note: `Wayfarer measured at ${percentOfC(probe)}`,
       },
       {
-        title: 'Observer A’s frame — A is racing past on the left',
+        title: 'Wayfarer’s frame — the ship is at rest',
         accent: palette.ship,
         rate: seen,
-        note: `probe measured at ${asPercent(seen)}`,
+        note: `Wayfarer measured at ${asPercent(seen)}`,
       },
     ];
 
@@ -109,15 +111,7 @@ export function speedLimit(): HTMLElement {
       drawShip(framesCtx, markerX, shipY, lane.accent);
       label(framesCtx, lane.note, w * 0.89, y - 10, palette.text, 11, 'right', 600);
 
-      label(
-        framesCtx,
-        'probe ship',
-        markerX,
-        shipY + laneH * 0.34,
-        palette.dim,
-        10,
-        'center',
-      );
+      label(framesCtx, 'Wayfarer', markerX, shipY + laneH * 0.34, palette.dim, 10, 'center');
     });
 
     label(
@@ -235,7 +229,7 @@ export function speedLimit(): HTMLElement {
 
   const sliderA = slider(
     {
-      label: 'Observer A',
+      label: 'Ana’s speed past the ship',
       min: 0.01,
       max: 0.99,
       step: 0.01,
@@ -250,13 +244,13 @@ export function speedLimit(): HTMLElement {
 
   const sliderProbe = slider(
     {
-      label: 'Probe ship (its lab speed)',
+      label: 'Wayfarer’s speed',
       min: 0.01,
       max: 0.99,
       step: 0.01,
       value: probe,
       display: percentOfC,
-      hint: 'The same physical ship in both lanes. Only the observer changes.',
+      hint: 'The same Wayfarer in both lanes. Only the observer changes.',
     },
     (v) => {
       probe = v;
@@ -279,11 +273,11 @@ export function speedLimit(): HTMLElement {
 
   const stats = el('div', { class: 'stats' }, [
     el('div', { class: 'stat' }, [
-      el('span', { class: 'stat-label' }, ['Lab measures the probe']),
+      el('span', { class: 'stat-label' }, ['Ana measures the ship']),
       labRead,
     ]),
     el('div', { class: 'stat' }, [
-      el('span', { class: 'stat-label' }, ['A measures the probe']),
+      el('span', { class: 'stat-label' }, ['The ship measures itself']),
       seenRead,
     ]),
     el('div', { class: 'stat' }, [
@@ -308,7 +302,10 @@ export function speedLimit(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['The wall, not the goalpost']),
       el('p', { class: 'panel-sub' }, [
-        frag(['Two reasons light speed cannot be passed: one geometric, one financial.']),
+        frag([
+          'Ana and the Wayfarer, again — now to ask why they can never close the gap ',
+          'between them and light. Two reasons: one geometric, one financial.',
+        ]),
       ]),
     ]),
     el('div', { class: 'panel-body' }, [

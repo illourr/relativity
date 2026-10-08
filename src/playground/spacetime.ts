@@ -68,7 +68,7 @@ export function spacetime(): HTMLElement {
       step: 0.01,
       value: beta,
       display: (v) => `${num(v * 100, 0)}% of light`,
-      hint: 'Same trip either way: 4.25 light-years out and back.',
+      hint: 'Same trip either way: 4.25 light-years out and back, with Ana waiting.',
     },
     (v) => {
       beta = v;
@@ -242,10 +242,11 @@ export function spacetime(): HTMLElement {
 
     if (progress > 0.985) {
       verdict.textContent =
-        `Reunited. Ana aged ${num(ROUND_TRIP_EARTH_YEARS, 2)} years; you aged ` +
-        `${num(ROUND_TRIP_EARTH_YEARS / gamma, 2)}. The gap is ${num(gap, 2)} years.`;
+        `Back in the hangar, clocks side by side. Ana's reads ${num(ROUND_TRIP_EARTH_YEARS, 2)} years; ` +
+        `yours reads ${num(ROUND_TRIP_EARTH_YEARS / gamma, 2)}. She is ${num(gap, 2)} years older than you.`;
     } else if (progress > 0.5) {
-      verdict.textContent = 'Inbound leg. You crossed the same distance home in the same Earth time.';
+      verdict.textContent =
+      'Inbound leg. You covered the same 4.25 light-years home in the same span of time Ana did.';
     } else if (progress > 0.001) {
       verdict.textContent = `Outbound. You are ${num(shipYears, 2)} years older; Ana is ${num(earthYears, 2)} years older.`;
     } else {
@@ -259,7 +260,10 @@ export function spacetime(): HTMLElement {
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['The traveller returns older']),
       el('p', { class: 'panel-sub' }, [
-        frag(['A round trip to Proxima Centauri, drawn in spacetime rather than in space.']),
+        frag([
+          'You and Ana, same launch, same reunion — 4.25 light-years out and back, ',
+          'drawn in spacetime rather than in space.',
+        ]),
       ]),
     ]),
     el('div', { class: 'panel-body' }, [
