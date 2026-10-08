@@ -6,9 +6,7 @@ import {
   label,
   line,
   num,
-  onTick,
   palette,
-  playback,
   percentOfC,
   roundRect,
   slider,
@@ -28,7 +26,6 @@ export function speedLimit(): HTMLElement {
   // people from the rest of the page, so no new cast is introduced here.
   let betaA = 0.9;
   let probe = 0.5;
-  let phase = 0;
 
   const framesCanvas = el('canvas', {
     class: 'canvas-wide',
@@ -64,17 +61,15 @@ export function speedLimit(): HTMLElement {
     framesCtx.clearRect(0, 0, w, h);
 
     const seen = seenSpeed();
-    const lanes: ReadonlyArray<{ title: string; accent: string; rate: number; note: string }> = [
+    const lanes: ReadonlyArray<{ title: string; accent: string; note: string }> = [
       {
         title: 'Ana’s frame — she is standing still in the hangar',
         accent: palette.home,
-        rate: probe,
         note: `Wayfarer measured at ${percentOfC(probe)}`,
       },
       {
         title: 'Wayfarer’s frame — the ship is at rest',
         accent: palette.ship,
-        rate: seen,
         note: `Wayfarer measured at ${asPercent(seen)}`,
       },
     ];
@@ -82,7 +77,6 @@ export function speedLimit(): HTMLElement {
     const laneH = h * 0.3;
     lanes.forEach((lane, index) => {
       const y = h * 0.2 + index * (laneH + h * 0.12);
-      const travel = w * 0.5;
 
       // Lane bed
       roundRect(framesCtx, w * 0.04, y, w * 0.92, laneH, 8);
@@ -91,12 +85,12 @@ export function speedLimit(): HTMLElement {
       framesCtx.fill();
       framesCtx.restore();
 
-      // Scrolling reference marks, whose drift shows the frame moving.
+      // Static reference marks along the lane.
       framesCtx.save();
       framesCtx.strokeStyle = palette.grid;
       framesCtx.lineWidth = 1;
       for (let i = 0; i < 14; i++) {
-        const x = w * 0.06 + ((i * w * 0.92) / 13 + (index === 1 ? phase * w * 0.92 * 1 : 0)) % (w * 0.92);
+        const x = w * 0.06 + (i * w * 0.92) / 13;
         framesCtx.beginPath();
         framesCtx.moveTo(x, y + laneH * 0.18);
         framesCtx.lineTo(x, y + laneH * 0.82);
@@ -106,12 +100,13 @@ export function speedLimit(): HTMLElement {
 
       label(framesCtx, lane.title, w * 0.07, y - 10, lane.accent, 11, 'left', 600);
 
-      // The probe ship, drifting at this lane's rate.
-      const markerX = w * 0.06 + (phase * travel * 6 * lane.rate) % (w * 0.86);
+      // The ship sits at a fixed position. It used to drift continuously,
+      // which conveyed nothing except that something was moving — the whole
+      // point of the panel is the two speed labels, not the travel.
+      const markerX = w * 0.34;
       const shipY = y + laneH * 0.5;
       drawShip(framesCtx, markerX, shipY, lane.accent);
       label(framesCtx, lane.note, w * 0.89, y - 10, palette.text, 11, 'right', 600);
-
       label(framesCtx, 'Wayfarer', markerX, shipY + laneH * 0.34, palette.dim, 10, 'center');
     });
 
@@ -292,14 +287,6 @@ export function speedLimit(): HTMLElement {
     ]),
   ]);
 
-  const play = playback();
-
-  onTick((_now, dt) => {
-    const advance = play.isPlaying() ? dt : play.consumeStep() ? 1 / 60 : 0;
-    phase = (phase + advance * 0.22) % 1;
-    drawLanes();
-  });
-
   update();
 
   return el('section', { class: 'panel' }, [
@@ -328,7 +315,7 @@ export function speedLimit(): HTMLElement {
       energyCanvas,
       wallNote,
     ]),
-    el('div', { class: 'controls' }, [sliderA.root, sliderProbe.root, play.root]),
+    el('div', { class: 'controls' }, [sliderA.root, sliderProbe.root]),
   ]);
 }
 

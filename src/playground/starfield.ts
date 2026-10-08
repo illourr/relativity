@@ -1,5 +1,3 @@
-import { onTick } from './ui.js';
-
 /**
  * Ambient starfield behind the whole page.
  *
@@ -63,10 +61,6 @@ function makeStar(layer: 0 | 1 | 2): Star {
   };
 }
 
-function prefersReducedMotion(): boolean {
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
 /**
  * Mounts the backdrop. Safe to call once; returns a teardown function.
  */
@@ -123,9 +117,7 @@ export function installStarfield(): () => void {
       // Wrap vertically over a long scroll rather than popping.
       const wrappedY = ((y % (height + 200)) + height + 200) % (height + 200) - 100;
 
-      // Twinkle. Reduced motion holds this at its base value.
-      const twinkle = 1 + Math.sin(elapsed * star.rate + star.phase) * 0.28;
-      const opacity = Math.max(0, Math.min(1, star.alpha * twinkle));
+      const opacity = star.alpha;
 
       ctx.globalAlpha = opacity;
       ctx.fillStyle = star.tint;
@@ -139,12 +131,19 @@ export function installStarfield(): () => void {
 
   build();
 
-  const reduced = prefersReducedMotion();
-  let elapsed = 0;
   let scrollY = window.scrollY;
 
+  // Redraw on scroll so the layers still shift against the page. That is the
+  // scroll position moving, not an autonomous animation.
+  let scrollQueued = false;
   const onScroll = (): void => {
-    scrollY = window.scrollY;
+    if (scrollQueued) return;
+    scrollQueued = true;
+    requestAnimationFrame(() => {
+      scrollQueued = false;
+      scrollY = window.scrollY;
+      draw(0, scrollY);
+    });
   };
   window.addEventListener('scroll', onScroll, { passive: true });
 
@@ -153,20 +152,17 @@ export function installStarfield(): () => void {
     window.clearTimeout(resizeHandle);
     resizeHandle = window.setTimeout(() => {
       build();
-      if (reduced) draw(0, window.scrollY);
+      draw(0, window.scrollY);
     }, 150);
   };
   window.addEventListener('resize', onResize);
 
-  // Reduced motion: one static frame, then stop. No ticker at all.
-  if (reduced) {
-    draw(0, window.scrollY);
-  } else {
-    onTick((_now, dt) => {
-      elapsed += dt;
-      draw(elapsed, scrollY);
-    });
-  }
+  // A still starfield. Drift and twinkle were decoration, and decoration in
+  // motion is exactly the extraneous load Tversky et al. (2002) warn about:
+  // it costs attention, cannot be re-inspected, and carries no information.
+  // The parallax against scroll still reads as depth, because that is the
+  // scroll position doing the work rather than an autonomous loop.
+  draw(0, window.scrollY);
 
   return () => {
     canvas.remove();

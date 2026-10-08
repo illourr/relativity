@@ -388,8 +388,10 @@ export function lightClock(): HTMLElement {
       'and every one of them is doing correct physics.',
   });
 
+  play.lock('Answer the question above to start the animation.');
   poe.root.addEventListener('click', () => {
     poeChosen = true;
+    play.lock(null);
   });
 
   update();
@@ -400,7 +402,7 @@ export function lightClock(): HTMLElement {
       el('p', { class: 'panel-sub' }, [
         frag([
           'You are aboard the Wayfarer, outbound from Earth at the speed below. ',
-          'Ana is back in the hangar watching you go. The same clock, drawn twice.',
+          'Ana is back in the hangar watching you go. One clock, three views.',
         ]),
       ]),
     ]),

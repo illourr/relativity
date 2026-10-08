@@ -9,9 +9,7 @@ import {
   label,
   line,
   num,
-  onTick,
   palette,
-  playback,
   roundRect,
   slider,
   surface,
@@ -33,8 +31,7 @@ const ROUND_TRIP_EARTH_YEARS = 2 * DISTANCE_LY;
 
 export function spacetime(): HTMLElement {
   let beta = 0.8;
-  let progress = 0;
-  let running = true;
+  let progress = 1;
 
   const canvas = el('canvas', {
     class: 'canvas-tall',
@@ -80,13 +77,10 @@ export function spacetime(): HTMLElement {
     },
     (v) => {
       beta = v;
-      render();
+      renderAll();
     },
   );
 
-  const playButton = checkbox('Animate the trip', true, (v) => {
-    running = v;
-  });
   const reveal = checkbox('Show the paradox and its answer', false, (v) => {
     paradoxNote.hidden = !v;
   });
@@ -301,14 +295,30 @@ export function spacetime(): HTMLElement {
     }
   }
 
-  const play = playback();
+  const scrubber = slider(
+    {
+      label: 'Scrub the journey',
+      min: 0,
+      max: 1000,
+      step: 1,
+      value: 1000,
+      display: (v) => {
+        const t = (v / 1000) * ROUND_TRIP_EARTH_YEARS;
+        return `${num(t, 2)} yr of Earth time`;
+      },
+      hint:
+        'Drag to move the ship along its path. It starts at the reunion, which is where the ' +
+        'answer is; drag back to watch the age difference accumulate.',
+    },
+    (v) => {
+      progress = v / 1000;
+      renderAll();
+    },
+  );
 
-  onTick((_now, dt) => {
-    if (running && (play.isPlaying() || play.consumeStep())) {
-      progress = (progress + dt / 7) % 1;
-      if (progress < dt / 7) progress = 0;
-    }
+  function renderAll(): void {
     const gamma = lorentzFactor(beta * C);
+    betaRead.textContent = `${num(gamma, 2)}\u00d7`;
     const earthYears = progress * ROUND_TRIP_EARTH_YEARS;
     const shipYears = earthYears / gamma;
     earthRead.textContent = `${num(earthYears, 2)} yr`;
@@ -335,7 +345,7 @@ export function spacetime(): HTMLElement {
       rowsCtx.clearRect(0, 0, rowsRect.width, rowsRect.height);
       drawClockRows(rowsCtx, rowsRect.width, rowsRect.height);
     }
-  });
+  }
 
   const poe = predictionPrompt({
     question:
@@ -385,6 +395,8 @@ export function spacetime(): HTMLElement {
       'around — and turning around is the entire physical content.',
   });
 
+  renderAll();
+
   return el('section', { class: 'panel' }, [
     el('div', { class: 'panel-head' }, [
       el('h3', { class: 'panel-title' }, ['The traveller returns older']),
@@ -431,7 +443,7 @@ export function spacetime(): HTMLElement {
         el('span', { html: 'Textbooks usually hide this. Ana reads <b>one</b> row of clocks for the whole trip. You read the outbound row going out and a <b>different</b> row coming home, and those two rows are not synchronised with each other.' }),
       ]),
     ]),
-    el('div', { class: 'controls' }, [speed.root, playButton.root, play.root, reveal.root]),
+    el('div', { class: 'controls' }, [speed.root, scrubber.root, reveal.root]),
     el('div', { class: 'panel-foot', style: 'padding:0 1.4rem 1.2rem' }, [paradoxNote]),
   ]);
 }

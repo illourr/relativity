@@ -307,12 +307,17 @@ export function dot(
 // ------------------------------------------------------------------ playback
 
 /**
- * Play / pause / single-step, shared by the animated modules.
+ * Play / pause / single-step, shared by the modules that draw sequences.
  *
- * Barma-Gelb (2007) found learner-paced presentations beat system-paced ones on
- * higher-element-interactivity material, with lower cognitive load — even
- * though students rarely pressed the buttons. The affordance matters more than
- * the usage rate, and it costs one boolean to provide.
+ * Two findings shaped this. Barma-Gelb (2007) found learner-paced
+ * presentations beat system-paced ones on higher-element-interactivity
+ * material at lower cognitive load — even though students rarely pressed the
+ * buttons. Tversky et al. (2002) found animation has no systematic advantage
+ * over static display and that transient information cannot be re-inspected,
+ * which imposes extraneous cognitive load. Together these argue for the same
+ * design: nothing auto-plays, and every moving thing can be stepped or paused.
+ *
+ * So `autoPlay` defaults to false throughout.
  */
 export interface Playback {
   root: HTMLElement;
@@ -320,14 +325,16 @@ export interface Playback {
   toggle: () => void;
   /** Register a request to advance one frame while paused. */
   step: () => void;
+  /** Disable the controls with an explanation, or re-enable them. */
+  lock: (reason: string | null) => void;
   /** True once per queued step request, so the caller advances one frame. */
   consumeStep: () => boolean;
   /** Re-render the controls after an external change. */
   sync: () => void;
 }
 
-export function playback(): Playback {
-  let playing = true;
+export function playback(autoPlay = false): Playback {
+  let playing = autoPlay;
   let queued = 0;
 
   const playIcon = el('span', { class: 'playback-icon', 'aria-hidden': 'true' }, ['❚❚']);
@@ -343,6 +350,21 @@ export function playback(): Playback {
     el('span', { class: 'playback-icon', 'aria-hidden': 'true' }, ['▶❙']),
     el('span', { class: 'playback-label' }, ['Step']),
   ]) as HTMLButtonElement;
+
+  /**
+   * Gates the controls behind a precondition, and says so. A control that
+   * silently does nothing reads as a broken page; a visibly locked one reads
+   * as a sequence.
+   */
+  const lock = (reason: string | null): void => {
+    for (const b of [button, stepButton]) {
+      b.disabled = reason !== null;
+      b.style.opacity = reason !== null ? '0.45' : '';
+      b.style.cursor = reason !== null ? 'not-allowed' : '';
+    }
+    button.title = reason ?? '';
+    stepButton.title = reason ?? '';
+  };
 
   const sync = (): void => {
     playIcon.textContent = playing ? '❚❚' : '▶';
@@ -376,6 +398,7 @@ export function playback(): Playback {
       queued -= 1;
       return true;
     },
+    lock,
     sync,
   };
 }

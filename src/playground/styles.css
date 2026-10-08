@@ -1259,3 +1259,8 @@ input[type="range"]:focus-visible {
 .poe-badge-correct {
   background: var(--good);
 }
+
+.playback-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
