@@ -1,0 +1,22 @@
+{
+  "name": "relativity",
+  "version": "1.0.0",
+  "description": "Special-relativity kinematics and dynamics in TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.web.json",
+    "build": "tsc -p tsconfig.json && node build.mjs",
+    "test": "tsc -p tsconfig.json && node dist/relativity.selfcheck.js",
+    "check": "npm run typecheck && npm run test && node build.mjs",
+    "serve": "node serve.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2"
+  },
+  "type": "module"
+}

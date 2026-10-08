@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Special relativity, explained to people who don't already believe it</title>
+    <meta
+      name="description"
+      content="An interactive, arithmetic-first explanation of time dilation, length contraction, the twin paradox, and why nothing goes faster than light."
+    />
+    <style>/*__CSS__*/</style>
+  </head>
+  <body>
+    <div class="shell">
+      <header class="masthead">
+        <p class="eyebrow">Special relativity, from the arithmetic up</p>
+        <h1>Everything you think you know about speed is slightly wrong.</h1>
+        <p class="standfirst">
+          Not in the details — in the parts that matter. Einstein didn't make the universe
+          stranger. He made it stranger in one specific, describable way, and then the
+          strangeness turned out to be testable to extraordinary precision. This page builds
+          that one idea from the ground up, using arithmetic you could check on a calculator.
+        </p>
+      </header>
+
+      <nav class="contents" aria-labelledby="contents-heading">
+        <h2 id="contents-heading">What's here, in the order it makes sense</h2>
+        <ol>
+          <li><a href="#one-number">The one number that changes everything</a></li>
+          <li><a href="#cost">What it costs you</a></li>
+          <li><a href="#now">"Right now" is not a fact</a></li>
+          <li><a href="#twins">The traveller comes home older</a></li>
+          <li><a href="#wall">The wall, not the goalpost</a></li>
+          <li><a href="#mass">Mass is energy, already</a></li>
+        </ol>
+      </nav>
+
+      <main>
+        <section class="module" id="one-number">
+          <div class="module-head">
+            <span class="tag">Module 1</span>
+            <h2>The one number that changes everything</h2>
+            <p class="lede">
+              All of it hangs off a single quantity: how fast you're going, compared to light.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              That ratio is called <span class="term">β</span>, and the number that matters is
+              <span class="term">γ</span>, which is just a rearrangement of Pythagoras:
+            </p>
+          </div>
+
+          <figure class="formula">
+            <div class="formula-body">γ = 1 ⁄ √(1 − β²) &nbsp;&nbsp;&nbsp;where β = v ⁄ c</div>
+            <figcaption>
+              At a hundredth of light speed, γ is 1.00005 and nothing measurable happens. At half
+              of light speed it's 1.15. At ninety-nine hundredths it's 7.1.
+            </figcaption>
+          </figure>
+
+          <div class="prose">
+            <p>
+              The thing worth noticing in that formula is not its strangeness but its
+              <em>shape</em>. It is flat until you're moving fast, and then it runs away
+              without limit. There is no regime where it becomes <em>more</em> strange; it
+              just stops being negligible.
+            </p>
+            <p>
+              Why that shape? Because space and time mix. If you measure how long something is
+              and how long it takes, and you insist that light goes the same speed no matter
+              who's measuring, the arithmetic that falls out is exactly the expression above.
+              Light isn't special because it's fast. It's special because it's the same speed
+              for everyone, and that one fact forces the trade.
+            </p>
+          </div>
+
+          <div class="panel" id="module-clock"></div>
+
+          <div class="prose">
+            <p>
+              Two observers can look at the same clock and honestly disagree about how long it
+              took. That sounds like the setup to a cheat, so it's worth being precise about
+              what they <em>do</em> agree on.
+            </p>
+          </div>
+
+          <div class="note note-key">
+            <strong>They agree on the ticks.</strong> Both count the same number of bounces of
+            the light beam between the mirrors. They disagree about how much of their own time
+            passed while that happened. Since every experiment they can possibly run has to go
+            through light, there is no experiment that settles the disagreement — both of them
+            are doing correct physics.
+          </div>
+
+          <div class="prose">
+            <p>
+              So the practical upshot of module 1 is a clock, moving, and a rate. That's the
+              whole mechanism. Everything after this is a consequence.
+            </p>
+          </div>
+
+          <div id="module-gamma"></div>
+
+          <div class="note note-caution">
+            <strong>Two things this is not.</strong> It isn't a theory about gravity — that's
+            general relativity, a different and much harder subject. And it isn't optional:
+            GPS satellites carry clocks that run about seven microseconds fast per day from
+            motion alone. Switch the correction off and your phone's map drifts by roughly ten
+            kilometres a year.
+          </div>
+        </section>
+
+        <section class="module" id="cost">
+          <div class="module-head">
+            <span class="tag">Module 2</span>
+            <h2>What it costs you</h2>
+            <p class="lede">
+              Nobody is moved by a Lorentz factor. People are moved by asking what the number
+              does to a life.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              Pick a destination and a speed below. The bar is to scale: your clock against
+              Earth's. The ratio between them is γ, exactly, with no fudge factor.
+            </p>
+          </div>
+
+          <div class="panel" id="module-trip"></div>
+
+          <div class="prose">
+            <p>
+              The comparison that usually lands is the last line. At high enough speed you get
+              home <em>before</em> a light signal sent from Earth today would arrive back —
+              even though you took a path out and back that light needed years to cover. You
+              simply experienced less time doing it.
+            </p>
+            <p>
+              The catch is the last clause of the sentence, and it's the whole catch: everyone
+              at home lived through that entire stretch of years, and you were not there for
+              any of it.
+            </p>
+          </div>
+        </section>
+
+        <section class="module" id="now">
+          <div class="module-head">
+            <span class="tag">Module 3</span>
+            <h2>"Right now" is not a fact</h2>
+            <p class="lede">
+              Here's the part that feels like a trick, and isn't. Two events that happen at the
+              same instant for you happen at different instants for someone moving relative to
+              you.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              To measure how long a moving object is, you have to note where its two ends are
+              at the same moment in your frame. That's the definition of length — you're
+              comparing two positions at one time. Pick a different moment and you get a
+              different number.
+            </p>
+            <p>
+              Which moment should you pick? Here's the trap: it feels as though there is a
+              universal <em>now</em>, a background clock the whole universe keeps, and that you
+              could in principle consult it. There isn't. Each observer slices spacetime at
+              their own angle, and the slices disagree.
+            </p>
+          </div>
+
+          <div class="panel" id="module-simultaneity"></div>
+
+          <div class="prose">
+            <p>
+              Length contraction falls out of this immediately. The rod measures itself with
+              its own simultaneous events and gets its rest length. You measure it with yours
+              and get something shorter. Neither of you is wrong, because "at the same time"
+              never pointed at the same pair of events in both frames.
+            </p>
+            <p>
+              And it's the same mechanism as module 1, aimed somewhere else. If a moving rod is
+              also being used as a clock — a length that ticks — then finding that fewer of its
+              seconds fit per unit of length means each second takes longer to pass. Same
+              geometry, same γ.
+            </p>
+          </div>
+
+          <div class="note note-key">
+            <strong>This is why the two modules agree.</strong> Nobody has ever measured a
+            moving object's length the naive way and got a longer answer. They measure it the
+            way length has to be measured — simultaneously, in their own frame — and they get
+            a shorter one. The surprise is only ever in the naive expectation.
+          </div>
+        </section>
+
+        <section class="module" id="twins">
+          <div class="module-head">
+            <span class="tag">Module 4</span>
+            <h2>The traveller comes home older</h2>
+            <p class="lede">
+              Put the previous idea on a round trip and the most famous argument in relativity
+              resolves cleanly.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              Two twins. Ana stays on Earth. You leave for Proxima Centauri, turn around, come
+              home. You meet. One of you is older. Which one, and why doesn't that break
+              anything?
+            </p>
+            <p>
+              Start with the part everyone agrees on: you both left at the same moment, you
+              both got back at the same moment, and the clocks at the reunion show the
+              difference. No disagreement there.
+            </p>
+          </div>
+
+          <div class="panel" id="module-spacetime"></div>
+
+          <div class="prose">
+            <p>
+              The picture that resolves it is a diagram of spacetime rather than of space.
+              Vertical is time, horizontal is space, and each person's life is the line they
+              trace through it.
+            </p>
+            <p>
+              The time you feel is the length of your own path between departure and reunion.
+              Ana's path is perfectly straight — she never changes course. Yours dives out into
+              space and comes back. And in the geometry of spacetime, a straight path is the
+              <em>longest</em> one, not the shortest. Bending into space costs you time.
+            </p>
+          </div>
+
+          <div class="note note-caution">
+            <strong>This is the opposite of ordinary intuition.</strong> In a map, the
+            straight line between two places is the shortest route. In spacetime it's the one
+            that buys you the most time. Anyone who finds that suspicious is in good company:
+            it took the better part of a century to be taken seriously.
+          </div>
+        </section>
+
+        <section class="module" id="wall">
+          <div class="module-head">
+            <span class="tag">Module 5</span>
+            <h2>The wall, not the goalpost</h2>
+            <p class="lede">
+              Why light speed can't be passed — two independent reasons, and you need both.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              The first is geometric. If two things are moving, you don't add their speeds —
+              you add them the way you add angles. Which means two objects each doing ninety
+              percent of light speed don't jointly do one hundred and eighty. They jointly do
+              slightly under one hundred.
+            </p>
+          </div>
+
+          <div class="panel" id="module-wall"></div>
+
+          <div class="prose">
+            <p>
+              The second is the one that actually stops rockets, because velocity addition on
+              its own isn't a rule anything is forced to obey. The energy curve is. Newtonian
+              kinetic energy stays finite at any speed, so Newton had no reason to object to
+              going faster and faster. Relativistic energy climbs without limit as you approach
+              light, so there is always another push needed and never a finite push that
+              finishes the job.
+            </p>
+          </div>
+        </section>
+
+        <section class="module" id="mass">
+          <div class="module-head">
+            <span class="tag">Module 6</span>
+            <h2>Mass is energy, already</h2>
+            <p class="lede">
+              E = mc² is usually shown as a curiosity. Here's the version that's worth
+              remembering.
+            </p>
+          </div>
+
+          <div class="prose">
+            <p>
+              That energy exists whether or not anything is moving. It isn't created by speed
+              — speed adds to a quantity that was already there. The rest energy is sitting in
+              the mass, and the number attached to it is absurdly large.
+            </p>
+          </div>
+
+          <div class="panel" id="module-mass"></div>
+
+          <div class="prose">
+            <p>
+              The reason it stays that way is that converting mass to energy is ruinously
+              difficult. Annihilation converts all of it at once and requires meeting something
+              moving at nearly light speed. Splitting nuclei releases a fraction of a percent.
+              Which is why a kilogram of matter is worth twenty megatons of TNT and also
+              completely unobtainable as a power source.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="colophon">
+        <p>
+          Every number on this page — γ, the clock rates, the trip durations, the energy
+          figures, the velocity sums — is computed at runtime by a single small TypeScript
+          module, not hard-coded. The same module that does the arithmetic is checked by
+          thirty-eight assertions covering the textbook values (γ at 0.6c, γ at 0.8c, E=mc²,
+          the energy–momentum identity) and the boundary conditions where the formulas stop
+          applying.
+        </p>
+        <p>
+          This is deliberately only <strong>special</strong> relativity: flat spacetime, inertial
+          frames, no gravity. General relativity — curved spacetime, black holes, the expansion
+          of the universe — is a different and much larger subject, and it agrees with
+          everything here wherever they overlap.
+        </p>
+        <p>
+          All diagrams use one isotropic scale for both axes, so the light-cone edges really are
+          at forty-five degrees and path lengths can be compared honestly.
+        </p>
+      </footer>
+    </div>
+
+    <script type="module">/*__JS__*/</script>
+  </body>
+</html>
