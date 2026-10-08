@@ -1,4 +1,5 @@
 import { C, lorentzFactor } from '../relativity.js';
+import { predictionPrompt } from './poe.js';
 import {
   checkbox,
   dashedLine,
@@ -10,6 +11,7 @@ import {
   num,
   onTick,
   palette,
+  playback,
   roundRect,
   slider,
   surface,
@@ -39,6 +41,12 @@ export function spacetime(): HTMLElement {
     'aria-label': 'Spacetime diagram of two twins separating and reuniting',
   });
   const ctx = surface(canvas).ctx;
+
+  const rowsCanvas = el('canvas', {
+    class: 'canvas-wide',
+    'aria-label': 'Ana reads one row of clocks the whole way; you read two that disagree',
+  });
+  const rowsCtx = surface(rowsCanvas).ctx;
 
   const earthRead = el('span', { class: 'stat-value' }, ['0.00']);
   const shipRead = el('span', { class: 'stat-value' }, ['0.00']);
@@ -76,7 +84,7 @@ export function spacetime(): HTMLElement {
     },
   );
 
-  const play = checkbox('Animate the trip', true, (v) => {
+  const playButton = checkbox('Animate the trip', true, (v) => {
     running = v;
   });
   const reveal = checkbox('Show the paradox and its answer', false, (v) => {
@@ -84,6 +92,72 @@ export function spacetime(): HTMLElement {
   });
 
   const betaRead = el('span', { class: 'slider-value' }, ['1.67×']);
+
+  /**
+   * The asymmetry, drawn as clocks.
+   *
+   * Textbooks routinely present the twin paradox by silently switching the
+   * traveller's reference frame at turnaround, then act surprised that the
+   * answer is asymmetric. Salerno et al. (2019) identify this omission as the
+   * source of most residual confusion. So: Ana reads one row of clocks the
+   * whole way. You read the outbound row on the way out and a *different* row
+   * on the way home, and the two rows disagree with each other. That
+   * desynchronisation is the asymmetry — it is not a consequence of it.
+   */
+  function drawClockRows(ctx: CanvasRenderingContext2D, w: number, h: number): void {
+    const rowsY = [h * 0.36, h * 0.66];
+    const left = w * 0.08;
+    const right = w * 0.92;
+    const count = 9;
+
+    const rows = [
+      { label: 'Ana', note: 'one row, start to finish', color: palette.home },
+      { label: 'You', note: 'outbound row, then a different one home', color: palette.ship },
+    ];
+
+    rows.forEach((row, rowIndex) => {
+      const y = rowsY[rowIndex];
+      if (y === undefined) return;
+
+      label(ctx, row.label, left, y - 26, row.color, 12, 'left', 650);
+      label(ctx, row.note, left, y - 11, palette.faint, 10, 'left');
+
+      // Ana reads a single continuous row. You read two, and they do not line
+      // up where they meet.
+      const halves = rowIndex === 0 ? 1 : 2;
+      for (let half = 0; half < halves; half++) {
+        const from = left + (right - left) * (half / halves);
+        const to = left + (right - left) * ((half + 1) / halves);
+        line(ctx, from, y, to, y, row.color, half === 0 ? 2 : 2);
+
+        // Desynchronisation marker: the gap where your second row begins.
+        if (rowIndex === 1 && half === 1) {
+          line(ctx, to, y - 14, to, y + 14, palette.bad, 2.5);
+          label(ctx, 'these two rows disagree', to + 8, y - 18, palette.bad, 10, 'left');
+          label(ctx, 'and the gap is what costs you time', to + 8, y + 22, palette.dim, 10, 'left');
+        }
+
+        for (let i = 0; i <= count; i++) {
+          const x = from + ((to - from) * i) / count;
+          line(ctx, x, y - 5, x, y + 5, row.color, 1.5);
+          if (i === 0 || i === count) {
+            label(ctx, i === 0 ? 'launch' : 'reunion', x, y + 17, palette.faint, 9, 'center');
+          }
+        }
+      }
+    });
+
+    label(
+      ctx,
+      'Ana never changes rows. You change yours once.',
+      w / 2,
+      h * 0.12,
+      palette.text,
+      11,
+      'center',
+      620,
+    );
+  }
 
   function render(): void {
     const gamma = lorentzFactor(beta * C);
@@ -227,8 +301,10 @@ export function spacetime(): HTMLElement {
     }
   }
 
+  const play = playback();
+
   onTick((_now, dt) => {
-    if (running) {
+    if (running && (play.isPlaying() || play.consumeStep())) {
       progress = (progress + dt / 7) % 1;
       if (progress < dt / 7) progress = 0;
     }
@@ -254,6 +330,59 @@ export function spacetime(): HTMLElement {
     }
 
     render();
+    const rowsRect = rowsCanvas.getBoundingClientRect();
+    if (rowsRect.width > 2 && rowsRect.height > 2) {
+      rowsCtx.clearRect(0, 0, rowsRect.width, rowsRect.height);
+      drawClockRows(rowsCtx, rowsRect.width, rowsRect.height);
+    }
+  });
+
+  const poe = predictionPrompt({
+    question:
+      'You leave for Proxima at 0.8c and come straight back at the same speed, turning around ' +
+      'instantly at the halfway point. You and Ana both started at 20. You meet again at the ' +
+      'hangar. Who is older?',
+    options: [
+      {
+        label: 'You are. You went out and came back while Ana waited.',
+        correct: true,
+        why:
+          'Correct. But notice how much work the return leg is doing. Going out alone proves ' +
+          'nothing — each of you sees the other age slowly, symmetrically. It is the turning ' +
+          'around that breaks the tie, and the diagram below shows exactly where the symmetry ' +
+          'breaks.',
+      },
+      {
+        label: 'Ana is. She was moving through space while I was stationary.',
+        correct: false,
+        why:
+          'The earth-centred way of putting it. From the hangar it looks as though Ana was the ' +
+          'one moving — she is, relative to the stars. But "the one who stayed put" is a choice ' +
+          'of frame, and it is not the one that answers the question. The question is settled by ' +
+          'the paths, not by who moved.',
+      },
+      {
+        label: 'We are the same age. You each saw the other age slowly, so it cancels out.',
+        correct: false,
+        why:
+          'This is the paradox as usually stated, and it is a genuinely reasonable thought. ' +
+          'It fails because it applies "each saw the other slow" to the whole journey. You use ' +
+          'one frame going out and a different one coming back. The two do not cancel, because ' +
+          'they are not the same claim.',
+      },
+      {
+        label: 'It depends on how much of the trip you spent accelerating.',
+        correct: false,
+        why:
+          'Not quite. Acceleration is what makes the path bend, and it is a real part of the ' +
+          'journey — but it is not a separate clock-reading effect. Even with instantaneous, ' +
+          'gentle turnarounds the result is the same. It is the shape of the path in spacetime, ' +
+          'not the size of the push, that sets the age gap.',
+      },
+    ],
+    takeaway:
+      'You cannot get younger by going fast. You get younger by going fast and then turning ' +
+      'around — and turning around is the entire physical content.',
   });
 
   return el('section', { class: 'panel' }, [
@@ -267,6 +396,7 @@ export function spacetime(): HTMLElement {
       ]),
     ]),
     el('div', { class: 'panel-body' }, [
+      poe.root,
       el('div', { class: 'split' }, [
         el('div', {}, [canvas]),
         el('div', {}, [
@@ -292,7 +422,16 @@ export function spacetime(): HTMLElement {
         ]),
       ]),
     ]),
-    el('div', { class: 'controls' }, [speed.root, play.root, reveal.root]),
+    el('div', { class: 'panel-body' }, [
+      el('h3', { class: 'map-legend-heading' }, [
+        'Where the symmetry actually breaks',
+      ]),
+      rowsCanvas,
+      el('div', { class: 'map-legend' }, [
+        el('span', { html: 'Textbooks usually hide this. Ana reads <b>one</b> row of clocks for the whole trip. You read the outbound row going out and a <b>different</b> row coming home, and those two rows are not synchronised with each other.' }),
+      ]),
+    ]),
+    el('div', { class: 'controls' }, [speed.root, playButton.root, play.root, reveal.root]),
     el('div', { class: 'panel-foot', style: 'padding:0 1.4rem 1.2rem' }, [paradoxNote]),
   ]);
 }

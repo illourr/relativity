@@ -3,6 +3,7 @@ import './styles.css';
 import { gammaTable } from './gammatable.js';
 import { installStarfield } from './starfield.js';
 import { lightClock } from './lightclock.js';
+import { selfCheck } from './selfcheck.js';
 import { massEnergy } from './massenergy.js';
 import { simultaneity } from './simultaneity.js';
 import { spacetime } from './spacetime.js';
@@ -13,6 +14,7 @@ import { tripCalculator } from './trip.js';
 const MODULES: ReadonlyArray<readonly [string, () => HTMLElement]> = [
   ['module-clock', lightClock],
   ['module-gamma', gammaTable],
+  ['module-selfcheck', selfCheck],
   ['module-trip', tripCalculator],
   ['module-simultaneity', simultaneity],
   ['module-spacetime', spacetime],

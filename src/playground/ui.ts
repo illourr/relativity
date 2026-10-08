@@ -304,6 +304,82 @@ export function dot(
   ctx.restore();
 }
 
+// ------------------------------------------------------------------ playback
+
+/**
+ * Play / pause / single-step, shared by the animated modules.
+ *
+ * Barma-Gelb (2007) found learner-paced presentations beat system-paced ones on
+ * higher-element-interactivity material, with lower cognitive load — even
+ * though students rarely pressed the buttons. The affordance matters more than
+ * the usage rate, and it costs one boolean to provide.
+ */
+export interface Playback {
+  root: HTMLElement;
+  isPlaying: () => boolean;
+  toggle: () => void;
+  /** Register a request to advance one frame while paused. */
+  step: () => void;
+  /** True once per queued step request, so the caller advances one frame. */
+  consumeStep: () => boolean;
+  /** Re-render the controls after an external change. */
+  sync: () => void;
+}
+
+export function playback(): Playback {
+  let playing = true;
+  let queued = 0;
+
+  const playIcon = el('span', { class: 'playback-icon', 'aria-hidden': 'true' }, ['❚❚']);
+  const playLabel = el('span', { class: 'playback-label' }, ['Pause']);
+
+  const button = el('button', {
+    type: 'button',
+    class: 'playback-button',
+    'aria-pressed': 'false',
+  }, [playIcon, playLabel]) as HTMLButtonElement;
+
+  const stepButton = el('button', { type: 'button', class: 'playback-button' }, [
+    el('span', { class: 'playback-icon', 'aria-hidden': 'true' }, ['▶❙']),
+    el('span', { class: 'playback-label' }, ['Step']),
+  ]) as HTMLButtonElement;
+
+  const sync = (): void => {
+    playIcon.textContent = playing ? '❚❚' : '▶';
+    playLabel.textContent = playing ? 'Pause' : 'Play';
+    button.setAttribute('aria-pressed', String(!playing));
+  };
+
+  const toggle = (): void => {
+    playing = !playing;
+    sync();
+  };
+
+  button.addEventListener('click', toggle);
+  stepButton.addEventListener('click', () => {
+    playing = false;
+    queued += 1;
+    sync();
+  });
+
+  sync();
+
+  return {
+    root: el('div', { class: 'playback' }, [button, stepButton]),
+    isPlaying: () => playing,
+    toggle,
+    step: () => {
+      queued += 1;
+    },
+    consumeStep: () => {
+      if (queued === 0) return false;
+      queued -= 1;
+      return true;
+    },
+    sync,
+  };
+}
+
 // ------------------------------------------------------------------ controls
 
 export interface SliderSpec {

@@ -8,6 +8,7 @@ import {
   num,
   onTick,
   palette,
+  playback,
   percentOfC,
   roundRect,
   slider,
@@ -291,8 +292,11 @@ export function speedLimit(): HTMLElement {
     ]),
   ]);
 
+  const play = playback();
+
   onTick((_now, dt) => {
-    phase = (phase + dt * 0.22) % 1;
+    const advance = play.isPlaying() ? dt : play.consumeStep() ? 1 / 60 : 0;
+    phase = (phase + advance * 0.22) % 1;
     drawLanes();
   });
 
@@ -310,6 +314,9 @@ export function speedLimit(): HTMLElement {
     ]),
     el('div', { class: 'panel-body' }, [
       framesCanvas,
+      el('div', { class: 'map-legend' }, [
+        el('span', { html: '<b>These lanes are world-maps.</b> They are coordinate statements about how fast one object passes another — not something either observer photographs.' }),
+      ]),
       el('div', { style: 'margin-top:1.4rem' }, [stats, verdict]),
       el('div', { class: 'prose', style: 'margin-bottom:0.4rem' }, [
         el('h3', {}, ['What it costs to get close']),
@@ -321,7 +328,7 @@ export function speedLimit(): HTMLElement {
       energyCanvas,
       wallNote,
     ]),
-    el('div', { class: 'controls' }, [sliderA.root, sliderProbe.root]),
+    el('div', { class: 'controls' }, [sliderA.root, sliderProbe.root, play.root]),
   ]);
 }
 

@@ -188,6 +188,23 @@ export function simultaneity(): HTMLElement {
     update();
   });
 
+  const terrell = el('div', { class: 'note note-caution' }, [
+    el('strong', {}, ['You would not see this happen.']),
+    el('p', { class: 'prose', style: 'margin:0.6rem 0 0' }, [
+      frag([
+        'This is the "invisibility" trap, and it catches almost everyone. If you stood beside the ' +
+        'rod and photographed it, ',
+        el('em', {}, ['you would not see a squashed rod']),
+        '. Because light takes time to travel from every point on it to your eye, a fast-moving ' +
+        'object photographs slightly ',
+        el('em', {}, ['rotated']),
+        ' rather than compressed — an effect called Terrell rotation. What you measure with a ' +
+        'ruler and what you see are genuinely two different things, and the contraction formula ' +
+        'describes the ruler.',
+      ]),
+    ]),
+  ]);
+
   const crossCheck = el('div', { class: 'note note-key' }, [
     frag([
       'The same rule, used differently, gives the time dilation from the first module. ',
@@ -233,6 +250,10 @@ export function simultaneity(): HTMLElement {
         rodCanvas,
       ]),
     ]),
+    el('div', { class: 'map-legend' }, [
+      el('span', { html: '<b>Both panels are world-maps.</b> These are measurements made with a ruler at rest in each frame.' }),
+      el('span', { html: 'A camera would show you neither of these. See below.' }),
+    ]),
     el('div', { class: 'panel-body' }, [
       el('div', { class: 'stats' }, [
         el('div', { class: 'stat' }, [
@@ -253,6 +274,7 @@ export function simultaneity(): HTMLElement {
           agreeRead,
         ]),
       ]),
+      terrell,
       crossCheck,
     ]),
     el('div', { class: 'controls' }, [speed.root, lineToggle.root]),

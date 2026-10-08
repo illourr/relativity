@@ -897,3 +897,365 @@ input[type="range"]:focus-visible {
   line-height: 1.6;
   color: var(--text);
 }
+
+/* ------------------------------------------- predict / observe / explain */
+
+.poe {
+  margin: 1.5rem 0;
+  padding: 1.1rem 1.25rem;
+  background: linear-gradient(180deg, rgba(247, 167, 43, 0.06), transparent 65%);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--home);
+  border-radius: var(--radius-sm);
+}
+
+.poe-question {
+  margin: 0 0 0.9rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.poe-options {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.poe-option {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  font: inherit;
+  font-size: 0.9rem;
+  text-align: left;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s, background 0.14s;
+}
+
+.poe-option:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.poe-option:disabled {
+  cursor: default;
+  opacity: 0.85;
+}
+
+.poe-option.is-correct {
+  color: var(--text);
+  border-color: var(--good);
+  background: rgba(61, 220, 151, 0.08);
+}
+
+.poe-option.is-wrong {
+  border-color: var(--bad);
+  background: rgba(255, 107, 107, 0.07);
+}
+
+.poe-mark {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+
+.poe-option.is-correct .poe-mark {
+  color: var(--good);
+}
+
+.poe-option.is-wrong .poe-mark {
+  color: var(--bad);
+}
+
+.poe-hint {
+  margin: 0.8rem 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.poe-reveal {
+  margin-top: 0.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--border);
+}
+
+.poe-why {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.poe-takeaway {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text);
+}
+
+/* ----------------------------------------------------- world-map legend */
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  padding: 0.7rem 1.4rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-soft);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-faint);
+}
+
+.map-legend b {
+  color: var(--text-dim);
+  font-weight: 620;
+}
+
+.map-legend-heading {
+  margin: 0 0 0.9rem;
+  font-size: 0.95rem;
+  font-weight: 640;
+  letter-spacing: -0.005em;
+  color: var(--text);
+}
+
+/* ------------------------------------------------------- self-check card */
+
+.selfcheck {
+  margin: 3rem 0 0;
+  padding: 1.75rem;
+  background: linear-gradient(180deg, rgba(61, 220, 151, 0.05), transparent 60%), var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.selfcheck-heading {
+  margin: 0 0 0.6rem;
+  font-size: 1.1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.selfcheck-intro {
+  margin: 0 0 1.25rem;
+  max-width: var(--measure);
+  font-size: 0.93rem;
+  line-height: 1.62;
+  color: var(--text-dim);
+}
+
+.selfcheck-summary {
+  margin-bottom: 1.5rem;
+  padding: 0.85rem 1rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.selfcheck-idle,
+.selfcheck-score,
+.selfcheck-warn,
+.selfcheck-ok {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.selfcheck-idle {
+  color: var(--text-faint);
+}
+
+.selfcheck-score {
+  font-weight: 640;
+  color: var(--text);
+}
+
+.selfcheck-partial {
+  font-weight: 450;
+  color: var(--text-faint);
+}
+
+.selfcheck-warn {
+  margin-top: 0.45rem;
+  color: var(--home);
+}
+
+.selfcheck-ok {
+  margin-top: 0.45rem;
+  color: var(--text-faint);
+}
+
+.selfcheck-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.selfcheck-item {
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.selfcheck-question {
+  margin: 0 0 0.8rem;
+  font-size: 0.95rem;
+  font-weight: 580;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.selfcheck-options {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.selfcheck-option {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  align-items: start;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  font: inherit;
+  font-size: 0.88rem;
+  text-align: left;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color 0.14s, color 0.14s;
+}
+
+.selfcheck-option:hover:not(:disabled) {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.selfcheck-option:disabled {
+  cursor: default;
+}
+
+.selfcheck-option.is-correct {
+  color: var(--text);
+  border-color: var(--good);
+  background: rgba(61, 220, 151, 0.08);
+}
+
+.selfcheck-option.is-wrong {
+  border-color: var(--bad);
+  background: rgba(255, 107, 107, 0.07);
+}
+
+.selfcheck-confidence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.75rem;
+}
+
+.selfcheck-confidence-label {
+  font-size: 0.8rem;
+  color: var(--text-faint);
+  margin-right: 0.3rem;
+}
+
+.selfcheck-confidence .poe-option {
+  width: auto;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.82rem;
+}
+
+.selfcheck-feedback {
+  margin-top: 0.8rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--bg-soft);
+  border-left: 3px solid var(--border-strong);
+  border-radius: 6px;
+}
+
+.selfcheck-feedback p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.62;
+  color: var(--text-dim);
+}
+
+/* ------------------------------------------------------------- playback */
+
+.playback {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.playback-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 0.8rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 550;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color 0.14s, border-color 0.14s;
+}
+
+.playback-button:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.playback-button:focus-visible {
+  outline: 2px solid var(--ship);
+  outline-offset: 2px;
+}
+
+.playback-icon {
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.poe-chosen-why {
+  margin: 0 0 0.6rem;
+  padding-left: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.poe-why {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+.poe-badge {
+  flex: none;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--text-faint);
+  border-radius: 3px;
+}
+
+.poe-badge-correct {
+  background: var(--good);
+}
