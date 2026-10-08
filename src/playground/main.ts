@@ -1,6 +1,7 @@
 import './styles.css';
 
 import { gammaTable } from './gammatable.js';
+import { installStarfield } from './starfield.js';
 import { lightClock } from './lightclock.js';
 import { massEnergy } from './massenergy.js';
 import { simultaneity } from './simultaneity.js';
@@ -70,12 +71,14 @@ function markCurrentSection(): void {
   for (const section of sections) observer.observe(section);
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    mount();
-    markCurrentSection();
-  });
-} else {
+function start(): void {
+  installStarfield();
   mount();
   markCurrentSection();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', start, { once: true });
+} else {
+  start();
 }
