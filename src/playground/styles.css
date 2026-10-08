@@ -1264,3 +1264,87 @@ input[type="range"]:focus-visible {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* --------------------------------------- simultaneity worked out in frames */
+
+.wavefront {
+  margin: 1.75rem 0;
+  padding: 1.5rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.wavefront-heading {
+  margin: 0 0 1.25rem;
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: -0.008em;
+  color: var(--text);
+}
+
+.wavefront-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.wavefront-panel {
+  padding: 1rem 1rem 1.15rem;
+  background: var(--surface);
+}
+
+.wavefront-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 680;
+  color: var(--bg);
+  background: var(--text-dim);
+  border-radius: 50%;
+}
+
+.wavefront-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 20 / 7;
+  margin-bottom: 0.7rem;
+  border-radius: 6px;
+}
+
+.wavefront-title {
+  margin: 0 0 0.35rem;
+  font-size: 0.88rem;
+  font-weight: 640;
+  color: var(--text);
+}
+
+.wavefront-body {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.58;
+  color: var(--text-dim);
+}
+
+/* ------------------------------------------------ pulse exchange diagram */
+
+.pulse-exchange {
+  margin: 1.75rem 0;
+  padding: 1.5rem;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.pulse-exchange .canvas-wide {
+  aspect-ratio: 16 / 8;
+  margin-bottom: 1.25rem;
+}

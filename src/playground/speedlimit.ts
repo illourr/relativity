@@ -31,7 +31,7 @@ export function speedLimit(): HTMLElement {
     class: 'canvas-wide',
     'aria-label': 'The same ship measured as faster or slower depending on the observer',
   });
-  const framesCtx = surface(framesCanvas).ctx;
+  const framesCtx = surface(framesCanvas, () => drawLanes()).ctx;
 
   const energyCanvas = el('canvas', {
     class: 'canvas-wide',

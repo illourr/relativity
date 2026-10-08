@@ -1,5 +1,6 @@
 import { C, lorentzFactor } from '../relativity.js';
 import { predictionPrompt } from './poe.js';
+import { pulseExchange } from './pulse.js';
 import {
   checkbox,
   dashedLine,
@@ -37,13 +38,18 @@ export function spacetime(): HTMLElement {
     class: 'canvas-tall',
     'aria-label': 'Spacetime diagram of two twins separating and reuniting',
   });
-  const ctx = surface(canvas).ctx;
+  let drawMain: () => void = () => {};
+  const ctx = surface(canvas, () => drawMain()).ctx;
 
   const rowsCanvas = el('canvas', {
     class: 'canvas-wide',
     'aria-label': 'Ana reads one row of clocks the whole way; you read two that disagree',
   });
-  const rowsCtx = surface(rowsCanvas).ctx;
+  let drawRows: (ctx: CanvasRenderingContext2D, w: number, h: number) => void = () => {};
+  const rowsCtx = surface(rowsCanvas, (c) => {
+    const r = rowsCanvas.getBoundingClientRect();
+    if (r.width > 2) drawRows(c, r.width, r.height);
+  }).ctx;
 
   const earthRead = el('span', { class: 'stat-value' }, ['0.00']);
   const shipRead = el('span', { class: 'stat-value' }, ['0.00']);
@@ -395,6 +401,8 @@ export function spacetime(): HTMLElement {
       'around — and turning around is the entire physical content.',
   });
 
+  drawMain = () => render();
+  drawRows = (c, rwd, rht) => drawClockRows(c, rwd, rht);
   renderAll();
 
   return el('section', { class: 'panel' }, [
@@ -438,6 +446,7 @@ export function spacetime(): HTMLElement {
       el('h3', { class: 'map-legend-heading' }, [
         'Where the symmetry actually breaks',
       ]),
+      pulseExchange(beta),
       rowsCanvas,
       el('div', { class: 'map-legend' }, [
         el('span', { html: 'Textbooks usually hide this. Ana reads <b>one</b> row of clocks for the whole trip. You read the outbound row going out and a <b>different</b> row coming home, and those two rows are not synchronised with each other.' }),

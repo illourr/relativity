@@ -1,4 +1,5 @@
 import { C, lengthContraction, lorentzFactor } from '../relativity.js';
+import { wavefrontArgument } from './wavefront.js';
 import {
   checkbox,
   dashedLine,
@@ -180,6 +181,7 @@ export function simultaneity(): HTMLElement {
     (v) => {
       beta = v;
       update();
+      rebuildWavefront();
     },
   );
 
@@ -187,6 +189,13 @@ export function simultaneity(): HTMLElement {
     showLabLine = v;
     update();
   });
+
+  // Rebuilt whenever the speed changes, since the argument is drawn to scale.
+  const wavefrontHost = el('div', {});
+  const rebuildWavefront = (): void => {
+    wavefrontHost.replaceChildren(wavefrontArgument(beta));
+  };
+  rebuildWavefront();
 
   const terrell = el('div', { class: 'note note-caution' }, [
     el('strong', {}, ['You would not see this happen.']),
@@ -274,6 +283,7 @@ export function simultaneity(): HTMLElement {
           agreeRead,
         ]),
       ]),
+      wavefrontHost,
       terrell,
       crossCheck,
     ]),
